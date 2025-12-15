@@ -20,10 +20,20 @@ export default function ToDoList() {
   useEffect(() => {
     async function getToDoList() {
       setLoading(true);
+      // 1️⃣ Verificar si el usuario existe
+      const usuarioExiste = await todolistServices.verificarUsuario();
+      
+      // 2️⃣ Si no existe, crearlo
+      if (!usuarioExiste) {
+        await todolistServices.crearUsuario();
+      }
+      
+      // 3️⃣ Cargar las tareas del usuario
       const tareasDeUsuario = await todolistServices.getToDoList();
       setTareas(tareasDeUsuario.todos || []);
       setLoading(false);
     }
+    
     getToDoList();
   }, []);
 
@@ -48,12 +58,25 @@ export default function ToDoList() {
     setInputValue("");
   }
 
-  // Función que elimina una tarea específica del array según su índice
+  // Función que elimina una tarea específica del array según su Id
   async function eliminarTarea(tareaId) {
     // 1️⃣ Eliminar la tarea en el servidor
     const response = await todolistServices.deleteToDoList(tareaId);
     // 2️⃣  Actualizar el estado local eliminando la tarea por su ID
     setTareas((prev) => prev.filter((tarea) => tarea.id !== tareaId));
+  }
+
+  // Función que edita una tarea específica del array según du Id
+  async function editarTarea(tareaId, tareaActualizada) {
+    // 1️⃣ Actualizar en el servidor
+    const tareaDelServidor = await todolistServices.putToDoList(tareaId, tareaActualizada);
+    // 2️⃣ Actualizar en el estado local
+    setTareas((prev) => 
+      prev.map((tarea) => 
+        tarea.id === tareaId ? tareaDelServidor : tarea
+      )
+    );
+  
   }
 
   // Función que detecta cuando se presiona la tecla Enter
@@ -109,6 +132,7 @@ export default function ToDoList() {
               tareas={tareas}
               tareaHover={tareaHover}
               setTareaHover={setTareaHover}
+              onEditar={editarTarea}
               onEliminar={eliminarTarea}
             />
           )}

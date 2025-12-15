@@ -4,6 +4,7 @@ export default function ListaTareas({
   tareas,
   tareaHover,
   setTareaHover,
+  onEditar,
   onEliminar,
 }) {
   return (
@@ -17,6 +18,7 @@ export default function ListaTareas({
           estaEnHover={tareaHover === tarea.id}
           onMouseEnter={() => setTareaHover(tarea.id)}
           onMouseLeave={() => setTareaHover(null)}
+          onEditar={onEditar}
           onEliminar={() => onEliminar(tarea.id)}
         />
       ))}
