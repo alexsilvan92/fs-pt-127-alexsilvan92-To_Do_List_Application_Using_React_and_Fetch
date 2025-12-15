@@ -11,7 +11,7 @@ export default function ListaTareas({
       {/* Recorre el array de tareas y crea un TareaItem por cada una */}
       {tareas.map((tarea, index) => (
         <TareaItem
-          key={index}
+          key={tarea.id}
           tarea={tarea}
           index={index}
           estaEnHover={tareaHover === index}

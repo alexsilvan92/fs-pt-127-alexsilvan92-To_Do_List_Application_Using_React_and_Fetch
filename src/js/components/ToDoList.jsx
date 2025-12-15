@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import InputNuevaTarea from "./InputNuevaTarea";
 import MensajeSinTareas from "./MensajeSinTareas";
 import ListaTareas from "./ListaTareas";
 import ContadorTareas from "./ContadorTareas";
+import todolistServices from "../services/todolistServices";
 
 export default function ToDoList() {
   //-------- ESTADOS DE LAS TAREAS, INPUTS Y EL HOVER EN LA LISTA DE TAREAS -------
@@ -12,6 +14,18 @@ export default function ToDoList() {
   const [inputValue, setInputValue] = useState("");
   // Estado que guarda el índice de la tarea sobre la que está el mouse
   const [tareaHover, setTareaHover] = useState(null);
+  // Estado que controla si la pagina esta cargando o no
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function getToDoList() {
+      setLoading(true);
+      const tareasDeUsuario = await todolistServices.getToDoList();
+      setTareas(tareasDeUsuario.todos || []);
+      setLoading(false);
+    }
+    getToDoList();
+  }, []);
 
   //-------- FUNCIONES DE MANEJO DE TAREAS -------
   // Función que agrega una nueva tarea al array de tareas
@@ -45,6 +59,20 @@ export default function ToDoList() {
   }
 
   //-------- RENDERIZADO -------
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100 ">
+        <div
+          className="spinner-border"
+          style={{ width: "10rem", height: "10rem" }}
+          role="status"
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="container mt-5">
       {/* Título principal de la aplicación */}

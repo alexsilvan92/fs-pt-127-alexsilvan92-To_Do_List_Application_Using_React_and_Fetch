@@ -13,7 +13,12 @@ export default function TareaItem({
       onMouseLeave={onMouseLeave}
     >
       {/* Contenedor del texto de la tarea */}
-      <div className="text-center fs-5 fw-bold">{tarea}</div>
+      <div className="text-center fs-5 fw-bold">
+        {tarea.is_done && <span className="text-success me-2">✓</span>}
+        <span className={tarea.is_done ? "text-decoration-line-through" : ""}>
+          {tarea.label}
+        </span>
+      </div>
 
       {/* Botón de eliminar que solo aparece cuando el mouse está sobre la tarea */}
       {estaEnHover && (
