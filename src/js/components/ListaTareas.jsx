@@ -14,10 +14,10 @@ export default function ListaTareas({
           key={tarea.id}
           tarea={tarea}
           index={index}
-          estaEnHover={tareaHover === index}
-          onMouseEnter={() => setTareaHover(index)}
+          estaEnHover={tareaHover === tarea.id}
+          onMouseEnter={() => setTareaHover(tarea.id)}
           onMouseLeave={() => setTareaHover(null)}
-          onEliminar={() => onEliminar(index)}
+          onEliminar={() => onEliminar(tarea.id)}
         />
       ))}
     </ul>

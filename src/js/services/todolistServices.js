@@ -63,7 +63,7 @@ async function deleteToDoList(todoId) {
   
   // RETURN OPCIONAL pero RECOMENDADO: 
   // Devuelve la respuesta para verificar si se eliminó correctamente
-  // response.ok será true si funcionó (código 200-299)
+  // response.ok será true si funcionó
   return response;
 }
 

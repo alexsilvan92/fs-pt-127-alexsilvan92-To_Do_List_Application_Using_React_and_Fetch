@@ -29,20 +29,31 @@ export default function ToDoList() {
 
   //-------- FUNCIONES DE MANEJO DE TAREAS -------
   // Función que agrega una nueva tarea al array de tareas
-  function añadirNuevaTarea() {
-    // Valida que el input no esté vacío (sin espacios en blanco)
-    if (inputValue.trim() === "") return;
+  async function añadirNuevaTarea() {
+    if (inputValue.trim() === "") return; // Valida que el input no esté vacío (sin espacios en blanco)
 
-    // Agrega el valor del input al final del array de tareas
-    setTareas((prev) => [...prev, inputValue]);
-    // Limpia el input después de agregar la tarea
+    // 1️⃣ Crear el objeto de la nueva tarea según el formato de la API
+    const nuevaTarea = {
+      label: inputValue.trim(), // El texto de la tarea
+      is_done: false, // Por defecto, la tarea NO está completada
+    };
+
+    // 2️⃣ Enviar la tarea a la API
+    const tareaCreada = await todolistServices.postToDoList(nuevaTarea);
+
+    // 3️⃣ Agregar la tarea creada al estado local
+    setTareas((prev) => [...prev, tareaCreada]);
+
+    // 4️⃣ Limpiar el input después de agregar la tarea
     setInputValue("");
   }
 
   // Función que elimina una tarea específica del array según su índice
-  function eliminarTarea(index) {
-    // Filtra el array manteniendo todas las tareas excepto la que coincide con el índice
-    setTareas((prev) => prev.filter((_, i) => i !== index));
+  async function eliminarTarea(tareaId) {
+    // 1️⃣ Eliminar la tarea en el servidor
+    const response = await todolistServices.deleteToDoList(tareaId);
+    // 2️⃣  Actualizar el estado local eliminando la tarea por su ID
+    setTareas((prev) => prev.filter((tarea) => tarea.id !== tareaId));
   }
 
   // Función que detecta cuando se presiona la tecla Enter
