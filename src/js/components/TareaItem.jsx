@@ -85,7 +85,7 @@ export default function TareaItem({
       {/* Botón de editar que solo aparece cuando el mouse está sobre la tarea */}
       {estaEnHover && (
         <button onClick={() => setModoEdicion(true)} className="btn btn-link p-0 m-2 border-0">
-          ✏
+          {modoEdicion ? "💾" : "✏"}
         </button>
       )}
 

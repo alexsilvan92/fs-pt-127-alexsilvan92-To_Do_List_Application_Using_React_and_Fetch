@@ -76,7 +76,6 @@ export default function ToDoList() {
         tarea.id === tareaId ? tareaDelServidor : tarea
       )
     );
-  
   }
 
   // Función que detecta cuando se presiona la tecla Enter
